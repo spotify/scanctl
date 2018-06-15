@@ -1,0 +1,14 @@
+sudo: false
+language: python
+python:
+- 3.6
+install: pip install tox
+script: tox
+deploy:
+  provider: pypi
+  user: spotify_foss
+  password:
+    secure: FynzYmqjZkQguwvh/h669Ill6pKMYBe3zekCYNEDo8cvaFHKCZ2A8FEyNq8PL101Q3bwylZbWYYsp7iU7zehpqq1adTC/W3b7oHPMj+1vojRD8V4K+OtQzEybHuvrdkOtL8tbX91uSAia24EVP7wRSioXcVFA3cPU7PR6J/qJvkT0oEAnfZDy6pY3WR/GzCrD10SSM8yhNRe+qBEVMQJmt+LHWX9jkHObuXdlGwx6tRtFsYjEq7cylUZjLBZLggJYflcrMcGKVvME2/8XsRCTb8JeVBfAXle+h1ZCWzGsTsMVxbiolEz99z3xg1jpkBaTFuY4B/rTyA4W+olozOl//8kd0oKxj+WRKg3dKEyIF7tb11Dnu88uKVd74lRizXQin39YccW1zCn36ft7GGJyaXiBaAfPWURIrMDhRla9OAIVfQ8DQhAMRmQn+VmqiCTyjfaliyAiZ6y5vv7J61oC4ATh+cVc9tg/WWS9LB1JdcdyRlOGazhCmAC3OMMEuJnBVKwoAcmaxlpOxt7Qx63hyQRnBOPG9zgAiEnxIXJneJtnCF4FZUfmh3EIYJOqW+wuU1pJeJECsI/PreEatOp8890cyrHqtAsYMkISJnkO44LTaDy3Sb9aWf+j8bThKoWRnaYZnD3u4w/SP/6XXm1V2SW+tmhxiauMAc2YRAwDzI=
+  on:
+    tags: true
+  distributions: sdist bdist_wheel
