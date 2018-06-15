@@ -1,6 +1,11 @@
 scanctl
 =======
 
+> A tool to facilitate managing Whitesource data
+
+![PyPi](https://img.shields.io/pypi/v/scanctl.svg)
+![Travis](https://img.shields.io/travis/spotify/scanctl.svg)
+
 ### Requirements:
 
 * Python 3.6
