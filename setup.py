@@ -11,7 +11,7 @@ name = 'scanctl'
 here = os.path.abspath(os.path.dirname(__file__))
 
 meta = {}
-with open(os.path.join(here, name, '__meta__.py')) as f:
+with open(os.path.join(here, name, '__init__.py')) as f:
     exec(f.read(), meta)
 
 
