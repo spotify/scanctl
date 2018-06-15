@@ -1,8 +1,9 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re
+import codecs
 import os
+import re
 
 from setuptools import find_packages
 from setuptools import setup
@@ -30,6 +31,14 @@ def requirements(*paths):
     return [r for r in parsed if r != '']
 
 
+def read(*paths, sep='\n', enc='utf-8'):
+    buf = []
+    for path in paths:
+        with codecs.open(os.path.join(here, path), 'rb', enc) as f:
+            buf.append(f.read())
+    return sep.join(buf)
+
+
 setup(
     name=find_meta('name'),
     version=find_meta('version'),
@@ -40,6 +49,7 @@ setup(
     maintainer_email=find_meta('email'),
     url=find_meta('url'),
     description=find_meta('description'),
+    long_description=read('README.md'),
     keywords=find_meta('keywords'),
     classifiers=find_meta('classifiers'),
     packages=find_packages(exclude=('tests',)),
