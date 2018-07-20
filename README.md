@@ -16,11 +16,11 @@ scanctl
 ### Development:
 
 ```sh
-$ git clone git@spotify.com:spotify/scanctl.git
+$ git clone git@github.com:spotify/scanctl.git
 $ cd scanctl
 
 # optionally create a virtualenv before installing
-$ pyenv virtualenv 3.6.2 venv
+$ pyenv virtualenv 3.6.5 venv
 $ pyenv activate venv
 
 (venv) $ pip install -r requirements.txt
@@ -36,11 +36,12 @@ $ pyenv activate venv
 
 ### Release:
 
-Follow the standard pull request flow; tests will be run before merging.
+Follow the standard pull request workflow; tests will be run before merging.
 Either as part of the pull request or as a commit to master, run the following
-to change the release version:
+commands to increment the release version:
 
 ```sh
+(venv) $ pip install -r requirements-dev.txt
 (venv) $ bumpversion minor
 ```
 
