@@ -34,6 +34,18 @@ $ pyenv activate venv
 (venv) $ scanctl scan --token $WHITESOURCE_API_TOKEN spotify/scanctl
 ```
 
+### Release:
+
+Follow the standard pull request flow; tests will be run before merging.
+Either as part of the pull request or as a commit to master, run the following
+to change the release version:
+
+```sh
+(venv) $ bumpversion minor
+```
+
+The next travis build will push the new package to PyPi.
+
 ### Code of Conduct
 
 This project adheres to the [Open Code of Conduct][code-of-conduct]. By
