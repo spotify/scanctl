@@ -43,6 +43,7 @@ commands to increment the release version:
 ```sh
 (venv) $ pip install -r requirements-dev.txt
 (venv) $ bumpversion minor
+(venv) $ git push && git push --tags
 ```
 
 The next travis build will push the new package to PyPi.
