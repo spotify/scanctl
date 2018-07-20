@@ -18,6 +18,8 @@
 import asyncio
 import logging
 import re
+import os
+import os.path
 import sys
 import tempfile
 
@@ -139,14 +141,22 @@ def ws_delete_projects(ctx, products):
               help='Token to use for Whitesource API access.')
 @click.option('--limit', type=click.INT, default=16,
               help='Maximum number of concurrent tasks while scanning.')
-def scan(repositories, file, remote, url, token, limit):
+@click.option('--fs-agent-jar', type=click.Path(exists=True),
+              default=os.path.join(os.getcwd(), 'fs-agent.jar'),
+              help='Path to Whitesource Filesystem Agent jar file.')
+@click.option('--fs-agent-config', type=click.Path(exists=True),
+              default=os.path.join(os.getcwd(), 'whitesource.config'),
+              help='Path to Whitesource Filesystem Agent config file.')
+def scan(repositories, file, remote, url, token, limit,
+         fs_agent_jar, fs_agent_config):
     if not (repositories or file):
         sys.exit('No repositories to scan.')
     if limit <= 0:
         sys.exit('Task limit cannot be less than 1.')
 
     sem = asyncio.Semaphore(limit)
-    agent = whitesource.FsAgent(token=token)
+    agent = whitesource.FsAgent(token=token,
+                                jar=fs_agent_jar, config=fs_agent_config)
     if file:
         repositories = list(repositories)
         repositories.extend(file.read().splitlines())

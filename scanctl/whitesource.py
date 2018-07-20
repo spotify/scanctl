@@ -93,8 +93,8 @@ class Project:
 @attr.s
 class FsAgent:
     token = attr.ib()
-    jar = attr.ib(os.path.join(os.getcwd(), 'bin', 'fs-agent.jar'))
-    config = attr.ib(os.path.join(os.getcwd(), 'etc', 'whitesource.config'))
+    jar = attr.ib(os.path.join(os.getcwd(), 'fs-agent.jar'))
+    config = attr.ib(os.path.join(os.getcwd(), 'whitesource.config'))
 
     async def run(self, org, repo, path):
         cmd = f'java -jar {self.jar} -c {self.config} -apiKey {self.token} '\
