@@ -16,7 +16,6 @@
 
 import logging
 import os
-import os.path
 
 import attr
 import requests

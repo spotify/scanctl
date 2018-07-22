@@ -17,9 +17,8 @@
 
 import asyncio
 import logging
-import re
 import os
-import os.path
+import re
 import sys
 import tempfile
 
@@ -155,8 +154,9 @@ def scan(repositories, file, remote, url, token, limit,
         sys.exit('Task limit cannot be less than 1.')
 
     sem = asyncio.Semaphore(limit)
-    agent = whitesource.FsAgent(token=token,
-                                jar=fs_agent_jar, config=fs_agent_config)
+    agent = whitesource.FsAgent(
+        token=token, jar=fs_agent_jar, config=fs_agent_config
+    )
     if file:
         repositories = list(repositories)
         repositories.extend(file.read().splitlines())
