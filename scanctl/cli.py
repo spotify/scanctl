@@ -34,6 +34,7 @@ loop = asyncio.get_event_loop()
 
 @click.group()
 @click.option('-v', '--verbose', count=True)
+@click.version_option()
 @click.pass_context
 def main(ctx, verbose):
     ctx.obj = {}
