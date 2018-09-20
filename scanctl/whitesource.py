@@ -95,7 +95,7 @@ class FsAgent:
     jar = attr.ib(os.path.join(os.getcwd(), 'fs-agent.jar'))
     config = attr.ib(os.path.join(os.getcwd(), 'whitesource.config'))
 
-    async def run(self, org, repo, path):
+    async def run(self, org, repo, path, timeout):
         cmd = f'java -jar {self.jar} -c {self.config} -apiKey {self.token} '\
               f'-product {org} -project {repo} -d {path}'
-        await shell.run(cmd)
+        await shell.run(cmd, timeout)

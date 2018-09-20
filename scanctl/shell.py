@@ -20,16 +20,24 @@ import asyncio
 import logging
 
 
-async def run(cmd):
-    proc = await asyncio.create_subprocess_shell(cmd, stdout=PIPE, stderr=PIPE)
-    out, err = await proc.communicate()
+async def run(cmd, timeout=None):
+    try:
+        proc = await asyncio.create_subprocess_shell(
+            cmd, stdout=PIPE, stderr=PIPE)
+        out, err = await asyncio.wait_for(proc.communicate(), timeout)
+    except asyncio.TimeoutError as e:
+        logging.info(f'command timed out: timeout={timeout} cmd={cmd}')
+        proc.terminate()
+        raise e
+
     out = out.decode('ascii').rstrip()
     err = err.decode('ascii').rstrip()
 
-    logging.debug(out)
-    logging.debug(err)
+    logging.debug('stdout: ' + out)
+    logging.debug('stderr: ' + err)
 
     if proc.returncode != 0:
-        raise Exception(f'command {cmd} returned {proc.returncode}: {err}')
+        ret = proc.returncode
+        raise Exception(f'command returned {ret}: err={err} cmd={cmd}')
 
     return out, err
