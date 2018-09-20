@@ -66,13 +66,17 @@ def github_list_orgs(ctx):
 
 @github_cmd.command(name='list-repos')
 @click.argument('orgs', nargs=-1)
+@click.option('--forks/--no-forks', default=False,
+              help='Whether to include forked repositories in results')
 @click.pass_context
-def github_list_repos(ctx, orgs):
+def github_list_repos(ctx, orgs, forks):
     gh = ctx.obj['gh']
     if not orgs:
         orgs = (org.login for org in gh.orgs())
     for org in orgs:
         for repo in gh.repos(org):
+            if not forks and repo.fork:
+                continue
             print(repo.full_name)
 
 
@@ -141,13 +145,15 @@ def ws_delete_projects(ctx, products):
               help='Token to use for Whitesource API access.')
 @click.option('--limit', type=click.INT, default=16,
               help='Maximum number of concurrent tasks while scanning.')
+@click.option('--timeout', type=click.INT, default=900,
+              help='Maximum duration before stopping a scan, in seconds.')
 @click.option('--fs-agent-jar', type=click.Path(exists=True),
               default=os.path.join(os.getcwd(), 'fs-agent.jar'),
               help='Path to Whitesource Filesystem Agent jar file.')
 @click.option('--fs-agent-config', type=click.Path(exists=True),
               default=os.path.join(os.getcwd(), 'whitesource.config'),
               help='Path to Whitesource Filesystem Agent config file.')
-def scan(repositories, file, remote, url, token, limit,
+def scan(repositories, file, remote, url, token, limit, timeout,
          fs_agent_jar, fs_agent_config):
     if not (repositories or file):
         sys.exit('No repositories to scan.')
@@ -166,7 +172,7 @@ def scan(repositories, file, remote, url, token, limit,
     tasks = []
     for repository in repositories:
         ssh_url = f'git@{remote}:{repository}.git'
-        coro = bounded(sem, _clone_and_scan(ssh_url, agent))
+        coro = bounded(sem, _clone_and_scan(ssh_url, agent, timeout))
         task = loop.create_task(coro)
         tasks.append(task)
 
@@ -179,14 +185,14 @@ async def bounded(sem, coro):
         return await coro
 
 
-async def _clone_and_scan(ssh_url, agent):
+async def _clone_and_scan(ssh_url, agent, timeout):
     tmp = tempfile.TemporaryDirectory()
     try:
         org, repo = _parse_ssh_url(ssh_url)
         click.echo(f'{org}/{repo}: ' + click.style('clone', fg='blue'))
         await github.clone(ssh_url, tmp.name)
         click.echo(f'{org}/{repo}: ' + click.style('scan', fg='blue'))
-        await agent.run(org, repo, tmp.name)
+        await agent.run(org, repo, tmp.name, timeout)
         click.echo(f'{org}/{repo}: ' + click.style('complete', fg='green'))
     except Exception as e:
         logging.debug(f'{org}/{repo}: {e}')
