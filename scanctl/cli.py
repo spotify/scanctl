@@ -66,13 +66,17 @@ def github_list_orgs(ctx):
 
 @github_cmd.command(name='list-repos')
 @click.argument('orgs', nargs=-1)
+@click.option('--forks/--no-forks', default=False,
+              help='Whether to include forked repositories in results')
 @click.pass_context
-def github_list_repos(ctx, orgs):
+def github_list_repos(ctx, orgs, forks):
     gh = ctx.obj['gh']
     if not orgs:
         orgs = (org.login for org in gh.orgs())
     for org in orgs:
         for repo in gh.repos(org):
+            if not forks and repo.fork:
+                continue
             print(repo.full_name)
 
 
