@@ -4,4 +4,4 @@ PyGithub==1.43.2
 PyJWT==1.6.4
 pyyaml==3.13
 requests==2.20.0
-ulogger==1.0.1
+ulogger==1.0.2
