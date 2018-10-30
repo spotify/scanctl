@@ -1,6 +1,6 @@
 attrs==18.2.0
 click==7.0
-PyGithub==1.38
+PyGithub==1.43.2
 PyJWT==1.6.1
 pyyaml==3.12
 requests==2.18.4
