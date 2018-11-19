@@ -3,5 +3,5 @@ click==7.0
 PyGithub==1.43.3
 PyJWT==1.6.4
 pyyaml==3.13
-requests==2.20.0
+requests==2.20.1
 ulogger==1.0.2
