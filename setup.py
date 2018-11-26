@@ -3,7 +3,6 @@
 
 import codecs
 import os
-import re
 
 from setuptools import find_packages
 from setuptools import setup
@@ -26,9 +25,7 @@ def find_meta(key):
 def requirements(*paths):
     with open(os.path.join(here, *paths)) as f:
         reqs_txt = f.read()
-    parsed = [re.split(r'[<~=>]=?', r, maxsplit=2)[0]
-              for r in reqs_txt.splitlines() if not r.startswith('-f')]
-    return [r for r in parsed if r != '']
+    return [r for r in reqs_txt.splitlines() if r != '']
 
 
 def read(*paths, sep='\n', enc='utf-8'):
