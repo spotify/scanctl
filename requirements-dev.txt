@@ -1,6 +1,6 @@
 autopep8==1.4.3
 bumpversion==0.5.3
 pylint==2.2.2
-tox==3.5.3
+tox==3.6.0
 twine==1.12.1
 wheel==0.32.2
